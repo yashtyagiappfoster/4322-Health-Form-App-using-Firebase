@@ -60,74 +60,93 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
       body: SafeArea(
-        child: Padding(
-          padding:
-              const EdgeInsets.only(top: 30, bottom: 30, left: 25, right: 25),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CustomWidgets.customWelcomeText("Welcome to the Login Screen"),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomWidgets.customTextFormField(
-                  emailController,
-                  Icons.mail,
-                  false,
-                  "Email",
-                  "Enter the email address..",
-                  TextInputType.emailAddress),
-              const SizedBox(
-                height: 15,
-              ),
-              CustomWidgets.customTextFormField(
-                  passwordController,
-                  Icons.password,
-                  true,
-                  "Password",
-                  "Enter the Password",
-                  TextInputType.text),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomWidgets.customButtonContainer("Login", () {
-                login(emailController.text.toString(),
-                    passwordController.text.toString());
-              }),
-              const SizedBox(
-                height: 10,
-              ),
-              CustomWidgets.customTextButton(() {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SignUpScreen(),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding:
+                const EdgeInsets.only(top: 30, bottom: 30, left: 25, right: 25),
+            child: Form(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomWidgets.customWelcomeText(
+                      "Welcome to the Login Screen"),
+                  const SizedBox(
+                    height: 20,
                   ),
-                );
-              }, "Don't have an Account?"),
-              const SizedBox(
-                height: 10,
-              ),
-              CustomWidgets.customTextButton(() {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ForgotPasswordScreen(),
+                  CustomWidgets.customTextFormField(
+                      emailController,
+                      Icons.mail,
+                      false,
+                      "Email",
+                      "Enter the email address..",
+                      TextInputType.emailAddress, (value) {
+                    if (value.isEmpty ||
+                        value.toString().trim() == "" ||
+                        !(value.contains('@'))) {
+                      return 'Please enter the valid email address';
+                    }
+                    return null;
+                  }),
+                  const SizedBox(
+                    height: 15,
                   ),
-                );
-              }, "Forgot Password ?"),
-              const SizedBox(
-                height: 10,
-              ),
-              CustomWidgets.customTextButton(() {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const PhoneAuthScreen(),
+                  CustomWidgets.customTextFormField(
+                      passwordController,
+                      Icons.password,
+                      true,
+                      "Password",
+                      "Enter the Password",
+                      TextInputType.text, (value) {
+                    if (value.isEmpty ||
+                        value.toString().trim() == "" ||
+                        !(value.length > 6)) {
+                      return 'Please enter the valid password';
+                    }
+                    return null;
+                  }),
+                  const SizedBox(
+                    height: 20,
                   ),
-                );
-              }, "Login By Phone Number -->"),
-            ],
+                  CustomWidgets.customButtonContainer("Login", () {
+                    login(emailController.text.toString(),
+                        passwordController.text.toString());
+                  }),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CustomWidgets.customTextButton(() {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SignUpScreen(),
+                      ),
+                    );
+                  }, "Don't have an Account?"),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CustomWidgets.customTextButton(() {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ForgotPasswordScreen(),
+                      ),
+                    );
+                  }, "Forgot Password ?"),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CustomWidgets.customTextButton(() {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PhoneAuthScreen(),
+                      ),
+                    );
+                  }, "Login By Phone Number -->"),
+                ],
+              ),
+            ),
           ),
         ),
       ),

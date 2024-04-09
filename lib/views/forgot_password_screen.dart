@@ -48,31 +48,40 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ],
       ),
       body: SafeArea(
-          child: Padding(
-        padding:
-            const EdgeInsets.only(top: 30, bottom: 30, left: 25, right: 25),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomWidgets.customWelcomeText(
-                "Welcome to the Forgot Password Screen"),
-            const SizedBox(
-              height: 20,
-            ),
-            CustomWidgets.customTextFormField(
-                emailController,
-                Icons.mail,
-                false,
-                "Email",
-                "Enter the email address..",
-                TextInputType.emailAddress),
-            const SizedBox(
-              height: 20,
-            ),
-            CustomWidgets.customButtonContainer("Get new Password", () {
-              forgotPassword(emailController.text.toString());
-            }),
-          ],
+          child: SingleChildScrollView(
+        child: Padding(
+          padding:
+              const EdgeInsets.only(top: 30, bottom: 30, left: 25, right: 25),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomWidgets.customWelcomeText(
+                  "Welcome to the Forgot Password Screen"),
+              const SizedBox(
+                height: 20,
+              ),
+              CustomWidgets.customTextFormField(
+                  emailController,
+                  Icons.mail,
+                  false,
+                  "Email",
+                  "Enter the email address..",
+                  TextInputType.emailAddress, (value) {
+                if (value.isEmpty ||
+                    value.toString().trim() == "" ||
+                    !(value.contains('@'))) {
+                  return 'Please enter the valid email address';
+                }
+                return null;
+              }),
+              const SizedBox(
+                height: 20,
+              ),
+              CustomWidgets.customButtonContainer("Get new Password", () {
+                forgotPassword(emailController.text.toString());
+              }),
+            ],
+          ),
         ),
       )),
     );

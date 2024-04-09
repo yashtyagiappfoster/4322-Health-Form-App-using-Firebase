@@ -12,6 +12,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? valueChoose;
   List genders = ["Male", "Female", "other"];
   TextEditingController firstNameController = TextEditingController();
@@ -23,31 +24,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   addData(String firstName, String lastName, String age, String phoneNo,
       String email, String disease, String gender) async {
-    if (firstName == "" &&
-        lastName == "" &&
-        age == "" &&
-        phoneNo == "" &&
-        email == "" &&
-        disease == "") {
-      return CustomWidgets.customAlertDialog(context, "Enter Required Fields");
-    } else {
-      try {
-        await FirebaseFirestore.instance
-            .collection("Users")
-            .doc(firstName)
-            .set({
-          "name": "$firstName $lastName",
-          "email": email,
-          "phone no": phoneNo,
-          "age": age,
-          "disease": disease,
-          "gender": gender,
-        }).then((value) {
-          return CustomWidgets.customAlertDialog(context, "Form Submitted");
-        });
-      } catch (ex) {
-        return CustomWidgets.customAlertDialog(context, ex.toString());
-      }
+    try {
+      await FirebaseFirestore.instance.collection("Users").doc(firstName).set({
+        "name": "$firstName $lastName",
+        "email": email,
+        "phone no": phoneNo,
+        "age": age,
+        "disease": disease,
+        "gender": gender,
+      }).then((value) {
+        return CustomWidgets.customAlertDialog(context, "Form Submitted");
+      }).then((value) {
+        resetFields();
+      });
+    } catch (ex) {
+      return CustomWidgets.customAlertDialog(context, ex.toString());
     }
   }
 
@@ -71,6 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
     phoneNoController.text = '';
     emailController.text = '';
     diseaseDescriptionController.text = '';
+    _formKey = GlobalKey<FormState>();
+    setState(() {});
   }
 
   @override
@@ -102,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Form(
+                  key: _formKey,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -116,7 +110,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           false,
                           "First Name",
                           "Enter your First Name",
-                          TextInputType.name),
+                          TextInputType.name, (value) {
+                        if (value.isEmpty || value.toString().trim() == "") {
+                          return 'Please enter the valid name';
+                        }
+                        return null;
+                      }),
                       const SizedBox(
                         height: 10,
                       ),
@@ -126,7 +125,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           false,
                           "Last Name",
                           "Enter your Last Name",
-                          TextInputType.name),
+                          TextInputType.name, (value) {
+                        if (value.isEmpty || value.toString().trim() == "") {
+                          return 'Please enter the valid name';
+                        }
+                        return null;
+                      }),
                       const SizedBox(
                         height: 10,
                       ),
@@ -136,7 +140,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           false,
                           "Email",
                           "Enter your email address",
-                          TextInputType.emailAddress),
+                          TextInputType.emailAddress, (value) {
+                        if (value.isEmpty ||
+                            value.toString().trim() == "" ||
+                            !(value.contains('@'))) {
+                          return 'Please enter the valid email address';
+                        }
+                        return null;
+                      }),
                       const SizedBox(
                         height: 10,
                       ),
@@ -146,7 +157,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           false,
                           "Mobile No.",
                           "Enter your mobile no.",
-                          TextInputType.phone),
+                          TextInputType.phone, (value) {
+                        if (value.isEmpty ||
+                            value.toString().trim() == "" ||
+                            !(value.length == 10)) {
+                          return 'Please enter the valid mobile no.';
+                        }
+                        return null;
+                      }),
                       const SizedBox(
                         height: 10,
                       ),
@@ -156,7 +174,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           false,
                           "Age",
                           "Enter your age",
-                          TextInputType.number),
+                          TextInputType.number, (value) {
+                        if (value.isEmpty ||
+                            value.toString().trim() == "" ||
+                            (value.length > 2)) {
+                          return 'Please enter the valid age';
+                        }
+                        return null;
+                      }),
                       const SizedBox(
                         height: 10,
                       ),
@@ -184,21 +209,28 @@ class _HomeScreenState extends State<HomeScreen> {
                           false,
                           "Disease Description",
                           "Enter your disease Description here..",
-                          TextInputType.multiline),
+                          TextInputType.multiline, (value) {
+                        if (value.isEmpty || value.toString().trim() == "") {
+                          return 'Please enter the valid disease description';
+                        }
+                        return null;
+                      }),
                       const SizedBox(
                         height: 20,
                       ),
                       CustomWidgets.customButtonContainer(
                         "Submit Form",
                         () {
-                          addData(
-                              firstNameController.text.toString(),
-                              lastNameController.text.toString(),
-                              ageController.text.toString(),
-                              phoneNoController.text.toString(),
-                              emailController.text.toString(),
-                              diseaseDescriptionController.text.toString(),
-                              valueChoose!);
+                          if (_formKey.currentState!.validate()) {
+                            addData(
+                                firstNameController.text.toString(),
+                                lastNameController.text.toString(),
+                                ageController.text.toString(),
+                                phoneNoController.text.toString(),
+                                emailController.text.toString(),
+                                diseaseDescriptionController.text.toString(),
+                                valueChoose!);
+                          }
                         },
                       )
                     ],

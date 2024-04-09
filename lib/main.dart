@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Health Form App',
-      home: checkUser(),
+      home: HomeScreen(),
     );
   }
 }

@@ -7,7 +7,8 @@ class CustomWidgets {
       bool toHide,
       String labeltext,
       String hinttext,
-      TextInputType typeKeyboard) {
+      TextInputType typeKeyboard,
+      FormFieldValidator formValidator) {
     return TextFormField(
       controller: controller,
       obscureText: toHide,
@@ -22,6 +23,7 @@ class CustomWidgets {
         labelText: labeltext,
         hintText: hinttext,
       ),
+      validator: formValidator,
     );
   }
 

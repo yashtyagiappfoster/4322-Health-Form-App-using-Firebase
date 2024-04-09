@@ -54,31 +54,38 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
         ],
       ),
       body: SafeArea(
-        child: Padding(
-          padding:
-              const EdgeInsets.only(top: 30, bottom: 30, left: 25, right: 25),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CustomWidgets.customWelcomeText(
-                  "Welcome to the Phone Authentication Screen"),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomWidgets.customTextFormField(
-                  phoneController,
-                  Icons.mail,
-                  false,
-                  "Phone no.",
-                  "Enter your phone no. with country code",
-                  TextInputType.number),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomWidgets.customButtonContainer("Get OTP", () {
-                phoneAuth(phoneController.text.toString());
-              }),
-            ],
+        child: SingleChildScrollView(
+          child: Padding(
+            padding:
+                const EdgeInsets.only(top: 30, bottom: 30, left: 25, right: 25),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomWidgets.customWelcomeText(
+                    "Welcome to the Phone Authentication Screen"),
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomWidgets.customTextFormField(
+                    phoneController,
+                    Icons.mail,
+                    false,
+                    "Phone no.",
+                    "Enter your phone no. with country code",
+                    TextInputType.number, (value) {
+                  if (value.isEmpty || value.toString().trim() == "") {
+                    return 'Please enter the valid mobile no.';
+                  }
+                  return null;
+                }),
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomWidgets.customButtonContainer("Get OTP", () {
+                  phoneAuth(phoneController.text.toString());
+                }),
+              ],
+            ),
           ),
         ),
       ),

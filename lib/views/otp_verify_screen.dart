@@ -55,26 +55,38 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
         ],
       ),
       body: SafeArea(
-        child: Padding(
-          padding:
-              const EdgeInsets.only(top: 30, bottom: 30, left: 25, right: 25),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CustomWidgets.customWelcomeText(
-                  "Welcome to the OTP Verification Screen Screen"),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomWidgets.customTextFormField(otpController, Icons.mail,
-                  false, "OTP", "Enter the code", TextInputType.text),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomWidgets.customButtonContainer("Verify OTP", () {
-                verifyOtp(otpController.text.toString());
-              }),
-            ],
+        child: SingleChildScrollView(
+          child: Padding(
+            padding:
+                const EdgeInsets.only(top: 30, bottom: 30, left: 25, right: 25),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomWidgets.customWelcomeText(
+                    "Welcome to the OTP Verification Screen Screen"),
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomWidgets.customTextFormField(
+                    otpController,
+                    Icons.mail,
+                    false,
+                    "OTP",
+                    "Enter the code",
+                    TextInputType.text, (value) {
+                  if (value.isEmpty || value.toString().trim() == "") {
+                    return 'Please enter the valid disease description';
+                  }
+                  return null;
+                }),
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomWidgets.customButtonContainer("Verify OTP", () {
+                  verifyOtp(otpController.text.toString());
+                }),
+              ],
+            ),
           ),
         ),
       ),
