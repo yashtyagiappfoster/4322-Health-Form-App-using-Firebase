@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "361584394408",
+    "project_id": "healthform-6a3e0",
+    "storage_bucket": "healthform-6a3e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:361584394408:android:2ad4771072d1ef2c65029d",
+        "android_client_info": {
+          "package_name": "com.example.health_form_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5h5IKamgYb0mzwFzEEOsd_29a34a5TpA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
